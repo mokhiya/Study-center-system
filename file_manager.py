@@ -52,6 +52,6 @@ class JsonManager:
         return len(updated_data) < len(all_data)
 
 
-user_manager = JsonManager("users.json")
-order_manager = JsonManager("orders.json")
-admin_manager = JsonManager("admin_data.json")
+student_manager = JsonManager("students.json")
+teacher_manager = JsonManager("teachers.json")
+admin_manager = JsonManager("admins.json")
