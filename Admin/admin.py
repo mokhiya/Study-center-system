@@ -1,9 +1,8 @@
 from file_manager import admin_manager, student_manager, teacher_manager
 from Admin.teachermanagement import (create_teacher, show_all_teachers, add_entity_to_groups,
                                      remove_entity_from_groups, delete_teacher)
-from Admin.studentmanagement import create_new_student, show_all_students
-from Admin.groupmanagement import create_group
-
+from Admin.studentmanagement import create_new_student, show_all_students, delete_student
+from Admin.groupmanagement import create_group, show_all_groups, delete_group
 
 
 def teacher_management():
@@ -15,8 +14,7 @@ def teacher_management():
     5. Delete teacher account.
     6. Go to back.
     
-    Choose an option above
-    """)
+    Choose an option above: """)
 
     if text == "1":
         if create_teacher():
@@ -52,8 +50,7 @@ def student_management():
         5. See all students.
         6. Go to back. 
 
-        Choose an option above
-        """)
+        Choose an option above: """)
 
     if text == "1":
         create_new_student()
@@ -65,7 +62,8 @@ def student_management():
         remove_entity_from_groups("student", "full_name", "students", student_manager)
         return student_management()
     elif text == "4":
-        pass
+        delete_student()
+        return student_management()
     elif text == "5":
         show_all_students()
         return student_management()
@@ -80,18 +78,20 @@ def group_management():
         3. Delete group.
         4. Go to back. 
 
-        Choose an option above
-        """)
+        Choose an option above: """)
 
     if text == "1":
         create_group()
         return group_management()
     elif text == "2":
-        pass
+        show_all_groups()
+        return group_management()
     elif text == "3":
-        pass
+        if delete_group():
+            pass
+        return group_management()
     else:
-        return False
+        return show_admin_menu()
 
 
 def show_admin_menu():
