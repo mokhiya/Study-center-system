@@ -1,5 +1,5 @@
 from file_manager import admin_manager
-from Admin.teachermanagement import create_teacher, delete_teacher
+from Admin.teachermanagement import create_teacher, show_all_teachers, delete_teacher
 from Admin.groupmanagement import create_group
 
 
@@ -22,7 +22,8 @@ def teacher_management():
             print("Teacher account created successfully.")
             return teacher_management()
     elif text == "2":
-        pass
+        show_all_teachers()
+        return teacher_management()
     elif text == "3":
         pass
     elif text == "4":
