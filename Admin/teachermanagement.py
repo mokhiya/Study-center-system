@@ -13,6 +13,24 @@ def create_teacher():
     return True
 
 
+def show_all_teachers():
+    teacher_data = teacher_manager.read_data()
+
+    if not teacher_data: # If teacher_data is empty
+        print("{:<30} {:<30}".format("No Teachers found", ''))
+        return False
+
+    print("Teachers:\n")
+    print("{:<30} {:<30}".format("Full name", "Email"))
+    print("-" * 80)
+
+    for data in teacher_data:
+        if data:  # Checking if data is not empty
+            print("{:<30} {:<30}".format(data['full_name'], data['email']))
+
+    return True
+
+
 def delete_teacher():
     teacher_login = input("Enter teacher's login to delete account: ").strip()
     teacher_data = teacher_manager.read_data()
