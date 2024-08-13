@@ -7,6 +7,7 @@ def check_student(login, password):
     try:
         for student in student_data:
             if student and login == student.get('login') and password == student.get('password'):
+                student['status'] = True
                 return True
     except Exception as e:
         print(f"An error occurred while reading student data: {e}")
@@ -15,13 +16,13 @@ def check_student(login, password):
 
 def get_logged_in_student():
     for student in student_data:
-        if student.get('status'):
+        if student['status']:
             return student
     return None
 
 
 def change_personal_data():
-    student_input = input("What would you like to change? "
+    student_input = input("What would you like to change?\n "
                           "1. Full name.\n"
                           "2. Password.\n"
                           "3. Email.\n"
@@ -32,8 +33,8 @@ def change_personal_data():
         changed_name = input("What would you like to change the name to? ").title().strip()
 
         for data in student_data:
-            if data["name"] == original_name:
-                data["name"] = changed_name
+            if data['full_name'] == original_name:
+                data['full_name'] = changed_name
                 print("Name changed successfully.")
                 break
         else:
@@ -71,13 +72,11 @@ def change_personal_data():
     student_manager.write_data(student_data)
 
 
-
-
 def show_my_groups():
     logged_in_student = get_logged_in_student()
 
     if logged_in_student:
-        print(f"\nGroups for {logged_in_student['name']}:\n")
+        print(f"\nGroups for {logged_in_student['full_name']}:\n")
         if 'groups' in logged_in_student and logged_in_student['groups']:
             for group in logged_in_student['groups']:
                 print(f"Group Name: {group['name']}, Subject: {group['subject']}, Room: {group['room']}")
@@ -91,10 +90,10 @@ def show_my_classes():
     logged_in_student = get_logged_in_student()
 
     if logged_in_student:
-        print(f"\nClasses for {logged_in_student['name']}:\n")
+        print(f"\nClasses for {logged_in_student['full_name']}:\n")
         if 'groups' in logged_in_student and logged_in_student['groups']:
             for group in logged_in_student['groups']:
-                print(f"Class Name: {group['name']}, Weekdays: {group['weekdays']}, Time: {group['time']}")
+                print(f"Class Name: {group['subject']}, Weekdays: {group['weekdays']}, Time: {group['time']}")
         else:
             print("You have no scheduled classes.")
     else:
