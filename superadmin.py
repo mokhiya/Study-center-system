@@ -1,9 +1,13 @@
+import smtplib
+import random
 from file_manager import admin_manager
 
 class Admin:
-    def __init__(self, login, password):
+    def __init__(self, login, password, email, verified=False):
         self.login = login
         self.password = password
+        self.email = email
+        self.verified = verified
 
 
 def create_admin():
@@ -17,9 +21,56 @@ def create_admin():
         else:
             print("Invalid input, enter an email again!")
 
-    admin_data = {
-        'admin_login': admin_login,
-        'admin_password': admin_password,
-        'admin_email': admin_email
-    }
-    admin_manager.add_data(admin_data)
+    admin = Admin(login=admin_login, password=admin_password, email=admin_email)
+    admin_manager.add_data(admin.__dict__)
+
+
+def send_verification_email(email, verification_code):
+    stmp_server = 'smtp.gmail.com'
+    stmp_port = 587
+    stmp_sender = 'your_email@gmail.com'
+    stmp_password = 'your_generated_app_password_here'
+
+    subject = "Email Verification"
+    message = f"Your verification code is {verification_code}"
+
+    email_content = f"Subject: {subject}\n\n{message}"
+
+    try:
+        server = smtplib.SMTP(stmp_server, stmp_port)
+        server.starttls()
+        server.login(stmp_sender, stmp_password)
+        server.sendmail(stmp_sender, email, email_content)
+        server.quit()
+        print(f"Verification code sent to {email}!")
+    except smtplib.SMTPException as e:
+        print(f"Error: unable to send email to {email}. Error: {e}")
+
+
+def verify_admins():
+    admins = admin_manager.read_data()
+
+    for admin in admins:
+        if 'email' in admin and not admin.get('verified', False):
+            verification_code = str(random.randint(100000, 999999))  # Generate a 6-digit random code
+            send_verification_email(admin['email'], verification_code)
+
+            entered_code = input(f"Enter the verification code sent to {admin['email']}: ")
+
+            if entered_code == verification_code:
+                print("Verification successful!")
+                admin['verified'] = True
+            else:
+                print("Verification failed. The code was incorrect.")
+
+    admin_manager.write_data(admins)
+    return True
+
+
+def send_message_to_all_admins():
+    admins = admin_manager.read_data()
+    for admin in admins:
+        if 'email' in admin and not admin.get('verified', False):
+
+
+
