@@ -1,7 +1,9 @@
-from file_manager import admin_manager
-from Admin.teachermanagement import (create_teacher, show_all_teachers, add_teacher_to_groups,
-                                     remove_teacher_from_groups, delete_teacher)
+from file_manager import admin_manager, student_manager, teacher_manager
+from Admin.teachermanagement import (create_teacher, show_all_teachers, add_entity_to_groups,
+                                     remove_entity_from_groups, delete_teacher)
+from Admin.studentmanagement import create_new_student, show_all_students
 from Admin.groupmanagement import create_group
+
 
 
 def teacher_management():
@@ -24,10 +26,10 @@ def teacher_management():
         show_all_teachers()
         return teacher_management()
     elif text == "3":
-        add_teacher_to_groups()
+        add_entity_to_groups('teacher')
         return teacher_management()
     elif text == "4":
-        remove_teacher_from_groups()
+        remove_entity_from_groups("teacher", "full_name", "teachers", teacher_manager)
         return teacher_management()
     elif text == "5":
         delete_teacher()
@@ -44,25 +46,31 @@ def teacher_management():
 def student_management():
     text = input("""
         1. Create a new student.
-        2. See all students.
-        3. Add student to groups.
-        4. Remove student from groups.
-        5. Delete student account.
+        2. Add student to groups.
+        3. Remove student from groups.
+        4. Delete student account.
+        5. See all students.
         6. Go to back. 
 
         Choose an option above
         """)
 
     if text == "1":
-        pass
+        create_new_student()
+        return student_management()
     elif text == "2":
-        pass
+        add_entity_to_groups('student')
+        return student_management()
     elif text == "3":
-        pass
+        remove_entity_from_groups("student", "full_name", "students", student_manager)
+        return student_management()
     elif text == "4":
         pass
+    elif text == "5":
+        show_all_students()
+        return student_management()
     else:
-        return False
+        return show_admin_menu()
 
 
 def group_management():
