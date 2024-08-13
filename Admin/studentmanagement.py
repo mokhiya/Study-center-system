@@ -37,3 +37,18 @@ def show_all_students():
             print("{:<30} {:<30}".format(data['full_name'], data['email'], data['groups']))
 
     return True
+
+
+def delete_student():
+
+    student_email = input("Enter teacher's login to delete account: ").strip()
+    student_data = student_manager.read_data()
+
+    for student in student_data:
+        if student['email'] == student_email:
+            student_manager.delete_data(student_email, 'email')
+            print(f"Teacher with email '{student_email}' has been deleted.")
+            return True
+
+    print(f"No teacher found with email '{student_email}'.")
+    return False
