@@ -125,7 +125,6 @@ def remove_entity_from_groups(entity_type, entity_name_key, group_key, entity_ma
     return removed
 
 
-
 def delete_teacher():
     teacher_login = input("Enter teacher's login to delete account: ").strip()
     teacher_data = teacher_manager.read_data()
