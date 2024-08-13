@@ -10,6 +10,18 @@ class Group:
         self.end = end
         self.duration = duration
         self.description = description
+        self.status = False
+
+    def to_dict(self):
+        # Convert the group object to a dictionary for storage
+        return {
+            "name": self.name,
+            "subject": self.subject,
+            "start": self.start.strftime("%d.%m.%Y"),
+            "end": self.end.strftime("%d.%m.%Y"),
+            "duration": self.duration,
+            "description": self.description
+        }
 
 
 def create_group():
@@ -27,4 +39,6 @@ def create_group():
 
     # Create the Group object with the calculated end date
     group = Group(group_name, subject, start_date, end_date, duration_months, group_description)
-    group_manager.add_group(group)
+
+    # Store the group data
+    group_manager.add_data(group.to_dict())
