@@ -7,8 +7,9 @@ def create_teacher():
     teacher_password = input("Create teacher's password: ").strip()
     teacher_name = input("Enter teacher's full name: ").title().strip()
     teacher_email = input("Enter teacher's email: ").strip()
+    teacher_gender = input("Enter teacher's gender: ").title().strip()
 
-    teacher = Teacher(teacher_login, teacher_password, teacher_name, teacher_email)
+    teacher = Teacher(login=teacher_login, password=teacher_password, full_name=teacher_name, email=teacher_email, gender=teacher_gender)
     teacher_manager.add_data(teacher.__dict__)
     return True
 
@@ -67,20 +68,59 @@ def add_teacher_to_groups():
 
     # Add the selected group to the teacher's 'groups' list
     selected_teacher.setdefault('groups', []).append(selected_group)
+    selected_group.setdefault('teachers', []).append({"full_name": teacher_name})
 
-    # Update the teachers data
+    # Update the data
     teacher_manager.write_data(teacher_data)
+    group_manager.write_data(groups)
 
     print(f"Group {group_name} added to teacher {teacher_name}'s groups list successfully.")
     return True
 
 
+def remove_teacher_from_groups():
+    show_all_teachers()
+    teacher_name = input("Enter the full name of the teacher to remove from groups: ").title().strip()
+    groups = group_manager.read_data()
+    teacher_data = teacher_manager.read_data()
+
+    # Flag to check if any removal occurred
+    removed = False
+
+    # Remove the teacher from the `teachers` list in each group
+    for group in groups:
+        if 'teachers' in group:
+            group['teachers'] = [teacher for teacher in group['teachers'] if teacher['full_name'] != teacher_name]
+
+    # Find the teacher in the list
+    selected_teacher = next((teacher for teacher in teacher_data if teacher['full_name'] == teacher_name), None)
+
+    if selected_teacher and 'groups' in selected_teacher:
+        # Remove the group data from the teacher's `groups` list
+        for group in groups:
+            selected_teacher['groups'] = [g for g in selected_teacher['groups'] if g['name'] != group['name']]
+            removed = True
+
+    if removed:
+        # Write updated data back to the files
+        group_manager.write_data(groups)
+        teacher_manager.write_data(teacher_data)
+        print(f"Teacher '{teacher_name}' has been removed from all associated groups.")
+    else:
+        print(f"No teacher named '{teacher_name}' found in any group.")
+
+    return removed
+
 
 def delete_teacher():
     teacher_login = input("Enter teacher's login to delete account: ").strip()
     teacher_data = teacher_manager.read_data()
+
     for teacher in teacher_data:
         if teacher['login'] == teacher_login:
-            teacher_manager.delete_data(teacher)
+            teacher_manager.delete_data(teacher_login, 'login')
+            print(f"Teacher with login '{teacher_login}' has been deleted.")
             return True
-        return False
+
+    print(f"No teacher found with login '{teacher_login}'.")
+    return False
