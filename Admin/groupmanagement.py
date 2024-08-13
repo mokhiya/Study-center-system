@@ -2,6 +2,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from file_manager import group_manager
 
+
 class Group:
     def __init__(self, name, subject, start, end, duration, description):
         self.name = name
@@ -25,11 +26,11 @@ class Group:
 
 
 def create_group():
-    group_name = input("Enter a group name: ")
-    subject = input("Enter a subject name for the group: ")
+    group_name = input("Enter a group name: ").title().strip()
+    subject = input("Enter a subject name for the group: ").title().strip()
     start_date_str = input("Enter start date (ex: 18.03.2024): ")
     duration_months = int(input("Enter duration in months: "))
-    group_description = input("Enter a description of the group: ")
+    group_description = input("Enter a description of the group: ").capitalize().strip()
 
     # Parse the start date
     start_date = datetime.datetime.strptime(start_date_str, "%d.%m.%Y")
