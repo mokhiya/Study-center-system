@@ -1,31 +1,26 @@
 from file_manager import admin_manager
-from teachermanagement import create_teacher, delete_teacher
-from groupmanagement import create_group
-
-"""
-2. Student management.
-3. Group management.
-4. Payment management.
-5. Logout.
-
-Choose an option above: """
+from Admin.teachermanagement import create_teacher, delete_teacher
+from Admin.groupmanagement import create_group
 
 
 def teacher_management():
     text = input("""
     1. Create a new teacher.
-    2. Add teacher to groups.
-    3. Add lessons to teachers.
-    4. Remove teacher from groups.
-    5. Remove lessons from teachers.
-    6. Delete teacher account.
-    7. Go to back.
+    2. See all teachers.
+    3. Add teacher to groups.
+    4. Add lessons to teachers.
+    5. Remove teacher from groups.
+    6. Remove lessons from teachers.
+    7. Delete teacher account.
+    8. Go to back.
     
     Choose an option above
     """)
 
     if text == "1":
-        create_teacher()
+        if create_teacher():
+            print("Teacher account created successfully.")
+            return teacher_management()
     elif text == "2":
         pass
     elif text == "3":
@@ -42,10 +37,11 @@ def teacher_management():
 def student_management():
     text = input("""
         1. Create a new student.
-        2. Add student to groups.
-        3. Remove student from groups.
-        4. Delete student account.
-        5. Go to back. 
+        2. See all students.
+        3. Add student to groups.
+        4. Remove student from groups.
+        5. Delete student account.
+        6. Go to back. 
 
         Choose an option above
         """)
