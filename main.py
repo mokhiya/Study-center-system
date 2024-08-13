@@ -1,5 +1,5 @@
-from file_manager import admin_manager
-from superadmin import create_admin, check_super_admin, check_admin
+from Admin.superadmin import create_admin, check_super_admin, check_admin
+from Admin.admin import teacher_management, group_management, student_management
 
 
 super_admin_login = "admin"
@@ -39,11 +39,14 @@ def show_admin_menu():
         Choose an option above: """).strip()
 
         if text == '1':
-            pass
+            if teacher_management():
+                show_admin_menu()
         elif text == '2':
-            pass
+            if student_management():
+                show_admin_menu()
         elif text == '3':
-            pass
+            if group_management():
+                show_admin_menu()
         elif text == '4':
             pass
         else:
