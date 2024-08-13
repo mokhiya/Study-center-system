@@ -56,3 +56,43 @@ def create_group():
 
     # Store the group data
     group_manager.add_data(group.to_dict())
+
+
+group_data = group_manager.read_data()
+
+
+def show_all_groups():
+    groups = group_manager.read_data()  # Fetch the group data from storage
+
+    if not groups:  # If no groups are created yet
+        print("{:<20} {:<20}".format("No groups created yet", ''))
+        return False
+
+    print("All groups:\n")
+    print("{:<20} {:<20} {:<15} {:<10} {:<10} {:<30}".format("Group name", "Subject", "Start time", "Duration", "Room", "Teachers"))
+    print("-" * 100)
+
+    try:
+        for group in groups:
+            if group:  # Checking if group is not empty
+                teachers_list = ', '.join(teacher['full_name'] for teacher in group['teachers'])
+                print("{:<20} {:<20} {:<15} {:<10} {:<10} {:<30}".format(
+                    group['name'], group['subject'], group['start'], group['duration'],
+                    group['room'], teachers_list))
+        return True
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
+
+
+def delete_group():
+    group_name = input("Enter a group name: ").title().strip()
+    if group_name not in group_data:
+        print("Group not found, try again later")
+        return False
+
+    for data in group_data:
+        if data['name'] == group_name:
+            group_manager.delete_group(data)
+            print("Group deleted successfully")
+            return True
