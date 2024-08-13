@@ -1,5 +1,5 @@
 from Admin.superadmin import create_admin, check_super_admin, check_admin
-from Admin.admin import teacher_management, group_management, student_management
+from Admin.admin import show_admin_menu
 
 
 super_admin_login = "admin"
@@ -26,31 +26,6 @@ def show_super_admin_menu():
         else:
             print("Invalid input, try again")
 
-
-def show_admin_menu():
-    while True:
-        text = input("""
-        1. Teacher management.
-        2. Student management.
-        3. Group management.
-        4. Payment management.
-        5. Logout.
-        
-        Choose an option above: """).strip()
-
-        if text == '1':
-            if teacher_management():
-                show_admin_menu()
-        elif text == '2':
-            if student_management():
-                show_admin_menu()
-        elif text == '3':
-            if group_management():
-                show_admin_menu()
-        elif text == '4':
-            pass
-        else:
-            print("Invalid input, try again")
 
 
 def show_auth_menu():
