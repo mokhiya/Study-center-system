@@ -1,5 +1,5 @@
 from Student.student import Student
-from file_manager import student_manager
+from file_manager import student_manager, group_manager
 
 
 def create_new_student():
@@ -21,3 +21,19 @@ def create_new_student():
     student_manager.add_data(student.__dict__)
 
 
+def show_all_students():
+    student_data = student_manager.read_data()
+
+    if not student_data:  # If student_data is empty
+        print("{:<30} {:<30}".format("No students found", ''))
+        return False
+
+    print("Students:\n")
+    print("{:<30} {:<30}".format("Full name", "Email", "Group"))
+    print("-" * 80)
+
+    for data in student_data:
+        if data:  # Checking if data is not empty
+            print("{:<30} {:<30}".format(data['full_name'], data['email'], data['groups']))
+
+    return True
