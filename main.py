@@ -1,5 +1,6 @@
 from Admin.superadmin import create_admin, check_super_admin, check_admin
 from Admin.admin import show_admin_menu
+from Student.studentmenu import check_student, show_student_menu
 
 
 super_admin_login = "admin"
@@ -27,7 +28,6 @@ def show_super_admin_menu():
             print("Invalid input, try again")
 
 
-
 def show_auth_menu():
     text = """
 1. Log in.
@@ -44,6 +44,9 @@ def show_auth_menu():
             show_super_admin_menu()
         elif check_admin(login=login, password=password):
             show_admin_menu()
+        elif check_student(login=login, password=password):
+
+            show_student_menu()
         else:
             print("System cannot detect you, please try later")
             show_auth_menu()
