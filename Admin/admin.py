@@ -1,5 +1,6 @@
 from file_manager import admin_manager
-from Admin.teachermanagement import create_teacher, show_all_teachers, add_teacher_to_groups,  delete_teacher
+from Admin.teachermanagement import (create_teacher, show_all_teachers, add_teacher_to_groups,
+                                     remove_teacher_from_groups, delete_teacher)
 from Admin.groupmanagement import create_group
 
 
@@ -8,11 +9,9 @@ def teacher_management():
     1. Create a new teacher.
     2. See all teachers.
     3. Add teacher to groups.
-    4. Add lessons to teachers.
-    5. Remove teacher from groups.
-    6. Remove lessons from teachers.
-    7. Delete teacher account.
-    8. Go to back.
+    4. Remove teacher from groups.
+    5. Delete teacher account.
+    6. Go to back.
     
     Choose an option above
     """)
@@ -28,13 +27,19 @@ def teacher_management():
         add_teacher_to_groups()
         return teacher_management()
     elif text == "4":
-        pass
+        remove_teacher_from_groups()
+        return teacher_management()
     elif text == "5":
-        pass
-    elif text == "6":
         delete_teacher()
+        return teacher_management()
+    elif text == "6":
+        return show_admin_menu()
     else:
-        return False
+        print("---------------------")
+        print("Invalid option!")
+        print("---------------------\n")
+        return teacher_management()
+
 
 def student_management():
     text = input("""
@@ -80,3 +85,28 @@ def group_management():
     else:
         return False
 
+
+def show_admin_menu():
+    while True:
+        text = input("""
+        1. Teacher management.
+        2. Student management.
+        3. Group management.
+        4. Payment management.
+        5. Logout.
+
+        Choose an option above: """).strip()
+
+        if text == '1':
+            if teacher_management():
+                show_admin_menu()
+        elif text == '2':
+            if student_management():
+                show_admin_menu()
+        elif text == '3':
+            if group_management():
+                show_admin_menu()
+        elif text == '4':
+            pass
+        else:
+            print("Invalid input, try again")
