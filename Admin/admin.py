@@ -1,4 +1,4 @@
-from file_manager import admin_manager, student_manager, teacher_manager
+from file_manager import student_manager, teacher_manager
 from Admin.teachermanagement import (create_teacher, show_all_teachers, add_entity_to_groups,
                                      remove_entity_from_groups, delete_teacher)
 from Admin.studentmanagement import create_new_student, show_all_students, delete_student
