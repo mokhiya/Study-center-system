@@ -1,4 +1,6 @@
 from file_manager import admin_manager
+from teachermanagement import create_teacher, delete_teacher
+from groupmanagement import create_group
 
 """
 2. Student management.
@@ -23,7 +25,7 @@ def teacher_management():
     """)
 
     if text == "1":
-        pass
+        create_teacher()
     elif text == "2":
         pass
     elif text == "3":
@@ -33,7 +35,7 @@ def teacher_management():
     elif text == "5":
         pass
     elif text == "6":
-        pass
+        delete_teacher()
     else:
         return False
 
@@ -71,7 +73,8 @@ def group_management():
         """)
 
     if text == "1":
-        pass
+        create_group()
+        return group_management()
     elif text == "2":
         pass
     elif text == "3":
