@@ -71,6 +71,20 @@ def send_message_to_all_admins():
     admins = admin_manager.read_data()
     for admin in admins:
         if 'email' in admin and not admin.get('verified', False):
+            pass
 
 
+def check_super_admin(login, password):
+    if login == super_admin_login and password == super_admin_password:
+        return True
+    return False
 
+def check_admin(login, password):
+    try:
+        admin = admin_manager.read_data()
+        for admin in admin:
+            if admin and login == admin.get('login') and password == admin.get('password'):
+                return True
+    except Exception as e:
+        print(f"An error occurred while reading admin data: {e}")
+    return False
