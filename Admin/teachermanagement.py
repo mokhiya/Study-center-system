@@ -1,5 +1,5 @@
 from Teacher.teacher import Teacher
-from file_manager import teacher_manager, group_manager
+from file_manager import teacher_manager, group_manager, student_manager
 
 
 def create_teacher():
@@ -32,84 +32,98 @@ def show_all_teachers():
     return True
 
 
-def add_teacher_to_groups():
+def add_entity_to_groups(entity_type):
+    # Determine the correct file managers based on the entity type
+    if entity_type == 'teacher':
+        entity_manager = teacher_manager
+    elif entity_type == 'student':
+        entity_manager = student_manager
+    else:
+        print(f"Unknown entity type: {entity_type}")
+        return False
+
+    # Load the data for the entities and groups
+    entities = entity_manager.read_data()
     groups = group_manager.read_data()
+
     if not groups:  # If no group is created yet
         print("{:<30} {:<30}".format("No groups created yet, please, first create groups", ''))
         return False
 
-    show_all_teachers()
+    if not entities:  # If no entities are found
+        print(f"No {entity_type}s found")
+        return False
+
+    print(f"\nAvailable {entity_type}s:\n")
+    print("{:<30} {:<30}".format("Full name", "Email"))
+    print("-" * 50)
+    for entity in entities:
+        print("{:<30} {:<30}".format(entity['full_name'], entity['email']))
 
     print("\n\nAvailable groups:\n")
     print("{:<30} {:<30} {:<15} {:<10}".format("Group name", "Subject", "Start date", "Duration"))
     print("-" * 50)
+    for group in groups:
+        print("{:<30} {:<30} {:<15} {:<10}".format(group['name'], group['subject'], group['start'], group['duration']))
 
-    for data in groups:
-        if data:
-            print("{:<30} {:<30} {:<15} {:<10}".format(data['name'], data['subject'], data['start'], data['duration']))
+    entity_name = input(f"\nEnter {entity_type}'s full name: ").title().strip()
+    group_name = input("Enter group name to add to entity: ").title().strip()
 
-    teacher_name = input("\nEnter teacher's full name: ").title().strip()
-    group_name = input("Enter group name to add to teacher: ").title().strip()
-
-    # Find the teacher in the list
-    teacher_data = teacher_manager.read_data()
-    selected_teacher = next((teacher for teacher in teacher_data if teacher['full_name'] == teacher_name), None)
-
-    if not selected_teacher:
-        print("No such teacher found:", teacher_name)
-        return add_teacher_to_groups()
-
-    # Find the group in the list
+    # Find the entity and group in the respective lists
+    selected_entity = next((entity for entity in entities if entity['full_name'] == entity_name), None)
     selected_group = next((group for group in groups if group['name'] == group_name), None)
+
+    if not selected_entity:
+        print(f"No such {entity_type} found:", entity_name)
+        return False
 
     if not selected_group:
         print("No such group found:", group_name)
-        return add_teacher_to_groups()
+        return False
 
-    # Add the selected group to the teacher's 'groups' list
-    selected_teacher.setdefault('groups', []).append(selected_group)
-    selected_group.setdefault('teachers', []).append({"full_name": teacher_name})
+    # Add the selected group to the entity's 'groups' list
+    selected_entity.setdefault('groups', []).append(selected_group)
+    selected_group.setdefault(f'{entity_type}s', []).append({"full_name": entity_name})
 
     # Update the data
-    teacher_manager.write_data(teacher_data)
+    entity_manager.write_data(entities)
     group_manager.write_data(groups)
 
-    print(f"Group {group_name} added to teacher {teacher_name}'s groups list successfully.")
+    print(f"Group {group_name} added to {entity_type} {entity_name}'s groups list successfully.")
     return True
 
 
-def remove_teacher_from_groups():
-    show_all_teachers()
-    teacher_name = input("Enter the full name of the teacher to remove from groups: ").title().strip()
+def remove_entity_from_groups(entity_type, entity_name_key, group_key, entity_manager):
+    entity_name = input(f"Enter the full name of the {entity_type} to remove from groups: ").title().strip()
     groups = group_manager.read_data()
-    teacher_data = teacher_manager.read_data()
+    entity_data = entity_manager.read_data()
 
     # Flag to check if any removal occurred
     removed = False
 
-    # Remove the teacher from the `teachers` list in each group
+    # Remove the entity from the `group_key` list in each group
     for group in groups:
-        if 'teachers' in group:
-            group['teachers'] = [teacher for teacher in group['teachers'] if teacher['full_name'] != teacher_name]
+        if group_key in group:
+            group[group_key] = [entity for entity in group[group_key] if entity[entity_name_key] != entity_name]
 
-    # Find the teacher in the list
-    selected_teacher = next((teacher for teacher in teacher_data if teacher['full_name'] == teacher_name), None)
+    # Find the entity in the list
+    selected_entity = next((entity for entity in entity_data if entity[entity_name_key] == entity_name), None)
 
-    if selected_teacher and 'groups' in selected_teacher:
-        # Remove the group data from the teacher's `groups` list
-        for group in groups:
-            selected_teacher['groups'] = [g for g in selected_teacher['groups'] if g['name'] != group['name']]
-            removed = True
+    if selected_entity and 'groups' in selected_entity:
+        # Remove the group data from the entity's `groups` list
+        selected_entity['groups'] = [g for g in selected_entity['groups'] if g['name'] not in [group['name'] for group in groups]]
+        removed = True
 
     if removed:
         # Write updated data back to the files
         group_manager.write_data(groups)
-        teacher_manager.write_data(teacher_data)
-        print(f"Teacher '{teacher_name}' has been removed from all associated groups.")
+        entity_manager.write_data(entity_data)
+        print(f"{entity_type.capitalize()} '{entity_name}' has been removed from all associated groups.")
     else:
-        print(f"No teacher named '{teacher_name}' found in any group.")
+        print(f"No {entity_type} named '{entity_name}' found in any group.")
 
     return removed
+
 
 
 def delete_teacher():
