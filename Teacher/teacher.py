@@ -1,5 +1,6 @@
 from file_manager import teacher_manager
 
+
 class Teacher:
     def __init__(self, login, password, full_name, gender, email):
         self.login = login
@@ -9,6 +10,5 @@ class Teacher:
         self.email = email
         self.status = False
         self.groups = []
-        self.lessons = []
 
 
