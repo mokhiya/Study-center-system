@@ -1,0 +1,130 @@
+from file_manager import student_manager
+
+student_data = student_manager.read_data()
+
+
+def check_student(login, password):
+    try:
+        for student in student_data:
+            if student and login == student.get('login') and password == student.get('password'):
+                return True
+    except Exception as e:
+        print(f"An error occurred while reading student data: {e}")
+    return False
+
+
+def get_logged_in_student():
+    for student in student_data:
+        if student.get('status'):
+            return student
+    return None
+
+
+def change_personal_data():
+    student_input = input("What would you like to change? "
+                          "1. Full name.\n"
+                          "2. Password.\n"
+                          "3. Email.\n"
+                          "Enter the number corresponding to your choice: ").strip()
+
+    if student_input == "1":
+        original_name = input("What name is used in registration? ").title().strip()
+        changed_name = input("What would you like to change the name to? ").title().strip()
+
+        for data in student_data:
+            if data["name"] == original_name:
+                data["name"] = changed_name
+                print("Name changed successfully.")
+                break
+        else:
+            print("Name not found.")
+
+    elif student_input == "2":
+        original_password = input("What password is used in registration? ").strip()
+        changed_password = input("What would you like to change the password to? ").strip()
+
+        for data in student_data:
+            if data["password"] == original_password:
+                data["password"] = changed_password
+                print("Password changed successfully.")
+                break
+        else:
+            print("Password not found.")
+
+    elif student_input == "3":
+        original_email = input("What email is used in registration? ").strip()
+        changed_email = input("What would you like to change the email to? ").strip()
+
+        for data in student_data:
+            if data["email"] == original_email:
+                data["email"] = changed_email
+                print("Email changed successfully.")
+                break
+        else:
+            print("Email not found.")
+
+    else:
+        print("Invalid input. Please try again.")
+        change_personal_data()
+
+    # Write the updated student_data back to the file
+    student_manager.write_data(student_data)
+
+
+
+
+def show_my_groups():
+    logged_in_student = get_logged_in_student()
+
+    if logged_in_student:
+        print(f"\nGroups for {logged_in_student['name']}:\n")
+        if 'groups' in logged_in_student and logged_in_student['groups']:
+            for group in logged_in_student['groups']:
+                print(f"Group Name: {group['name']}, Subject: {group['subject']}, Room: {group['room']}")
+        else:
+            print("You are not enrolled in any groups.")
+    else:
+        print("No student is logged in.")
+
+
+def show_my_classes():
+    logged_in_student = get_logged_in_student()
+
+    if logged_in_student:
+        print(f"\nClasses for {logged_in_student['name']}:\n")
+        if 'groups' in logged_in_student and logged_in_student['groups']:
+            for group in logged_in_student['groups']:
+                print(f"Class Name: {group['name']}, Weekdays: {group['weekdays']}, Time: {group['time']}")
+        else:
+            print("You have no scheduled classes.")
+    else:
+        print("No student is logged in.")
+
+
+def show_student_menu():
+    while True:
+        text = input("""
+        1. Change my data.
+        2. My groups.
+        3. My classes.
+        4. Log out.
+
+        Choose an option above: """)
+
+        if text == '1':
+            change_personal_data()
+        elif text == '2':
+            show_my_groups()
+        elif text == '3':
+            show_my_classes()
+        elif text == '4':
+            print("Logging out.")
+            # Set the student's status to False
+            for student in student_data:
+                if student.get('status'):
+                    student['status'] = False
+            student_manager.write_data(student_data)
+            break
+        else:
+            print('Invalid option, try again')
+
