@@ -7,4 +7,3 @@ class Student:
         self.gender = gender
         self.status = False
         self.groups = []
-        self.lessons = []
