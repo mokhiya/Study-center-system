@@ -54,4 +54,5 @@ class JsonManager:
 
 student_manager = JsonManager("students.json")
 teacher_manager = JsonManager("teachers.json")
-admin_manager = JsonManager("admins.json")
+admin_manager = JsonManager("Admin/admins.json")
+group_manager = JsonManager("groups.json")
