@@ -102,7 +102,11 @@ def start_or_end_lesson():
     class_choice = input("\nEnter lesson name: ").title().strip()
     start_end_lesson = input("Would you like to 1. start or 2. end the lesson? ").strip()
 
-    selected_group = next((group for group in group_data if group['subject'].title() == class_choice), None)
+    selected_group = None
+    for group in group_data:
+        if group['subject'].title() == class_choice:
+            selected_group = group
+            break
 
     if not selected_group:
         print("No matching lesson found.")
