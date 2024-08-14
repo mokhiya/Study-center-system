@@ -1,3 +1,9 @@
+"""
+This module handles the administrative functionalities for managing teachers, students, and groups in the system.
+It provides interactive menus for creating, viewing, updating, and deleting entities,
+and for navigating between different management areas.
+"""
+
 from file_manager import student_manager, teacher_manager
 from Admin.teachermanagement import (create_teacher, show_all_teachers, add_entity_to_groups,
                                      remove_entity_from_groups, delete_teacher)
@@ -6,6 +12,9 @@ from Admin.groupmanagement import create_group, show_all_groups, delete_group
 
 
 def teacher_management():
+    """
+    This function manages teacher-related operations through an interactive menu.
+    """
     text = input("""
     1. Create a new teacher.
     2. See all teachers.
@@ -42,6 +51,9 @@ def teacher_management():
 
 
 def student_management():
+    """
+    This function manages student-related operations through an interactive menu.
+    """
     text = input("""
         1. Create a new student.
         2. Add student to groups.
@@ -72,6 +84,9 @@ def student_management():
 
 
 def group_management():
+    """
+    This function manages group-related operations through an interactive menu.
+    """
     text = input("""
         1. Create a new group.
         2. See all groups.
@@ -95,13 +110,15 @@ def group_management():
 
 
 def show_admin_menu():
+    """
+    This function displays the main admin menu and handles navigation to different management areas.
+    """
     while True:
         text = input("""
         1. Teacher management.
         2. Student management.
         3. Group management.
-        4. Payment management.
-        5. Logout.
+        4. Quit.
 
         Choose an option above: """).strip()
 
@@ -115,6 +132,8 @@ def show_admin_menu():
             if group_management():
                 show_admin_menu()
         elif text == '4':
-            pass
+            print("Quitting..."
+                  "Start the program again to log in")
+            return
         else:
             print("Invalid input, try again")
