@@ -4,6 +4,8 @@ from file_manager import admin_manager
 
 super_admin_login = "admin"
 super_admin_password = "0000"
+
+
 class Admin:
     def __init__(self, login, password, email, verified=False):
         self.login = login
@@ -80,6 +82,7 @@ def check_super_admin(login, password):
     if login == super_admin_login and password == super_admin_password:
         return True
     return False
+
 
 def check_admin(login, password):
     try:
