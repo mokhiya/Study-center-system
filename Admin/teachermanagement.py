@@ -9,7 +9,8 @@ def create_teacher():
     teacher_email = input("Enter teacher's email: ").strip()
     teacher_gender = input("Enter teacher's gender: ").title().strip()
 
-    teacher = Teacher(login=teacher_login, password=teacher_password, full_name=teacher_name, email=teacher_email, gender=teacher_gender)
+    teacher = Teacher(login=teacher_login, password=teacher_password, full_name=teacher_name,
+                      email=teacher_email, gender=teacher_gender)
     teacher_manager.add_data(teacher.__dict__)
     return True
 
@@ -111,7 +112,8 @@ def remove_entity_from_groups(entity_type, entity_name_key, group_key, entity_ma
 
     if selected_entity and 'groups' in selected_entity:
         # Remove the group data from the entity's `groups` list
-        selected_entity['groups'] = [g for g in selected_entity['groups'] if g['name'] not in [group['name'] for group in groups]]
+        selected_entity['groups'] = [g for g in selected_entity['groups'] if g['name']
+                                     not in [group['name'] for group in groups]]
         removed = True
 
     if removed:
