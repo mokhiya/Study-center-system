@@ -1,9 +1,21 @@
 from file_manager import student_manager
 
+# Loads the student data from the file
 student_data = student_manager.read_data()
 
 
 def check_student(login, password):
+    """
+    This function checks if a student with the provided login and password exists
+    in the student data. 
+
+    Args:
+        login (str): The login username for the student.
+        password (str): The password for the student's account.
+
+    Returns:
+        bool: True if the student is found and authenticated, False otherwise.
+    """
     try:
         for student in student_data:
             if student and login == student.get('login') and password == student.get('password'):
@@ -15,6 +27,12 @@ def check_student(login, password):
 
 
 def get_logged_in_student():
+    """
+    This function retrieves the currently logged-in student based on their status.
+
+    Returns:
+        dict: The data of the logged-in student, or None if no student is logged in.
+    """
     for student in student_data:
         if student['status']:
             return student
@@ -22,6 +40,12 @@ def get_logged_in_student():
 
 
 def change_personal_data():
+    """
+    This function allows the logged-in student to change their personal data including full name, password, or email.
+
+    Returns:
+        None
+    """
     student_input = input("What would you like to change?\n "
                           "1. Full name.\n"
                           "2. Password.\n"
@@ -73,6 +97,13 @@ def change_personal_data():
 
 
 def show_my_groups():
+    """
+    This function displays all the groups that the logged-in student is currently enrolled in.
+    If no student is logged in, or if the student is not enrolled in any groups, it displays appropriate messages.
+
+    Returns:
+        None
+    """
     logged_in_student = get_logged_in_student()
 
     if logged_in_student:
@@ -87,6 +118,12 @@ def show_my_groups():
 
 
 def show_my_classes():
+    """
+    This function displays all the classes that the logged-in student is currently scheduled for.
+
+    Returns:
+        None
+    """
     logged_in_student = get_logged_in_student()
 
     if logged_in_student:
@@ -101,6 +138,19 @@ def show_my_classes():
 
 
 def show_student_menu():
+    """
+    This function displays a menu for the logged-in student with options to change their data,
+    view their groups, view their classes, or log out. It loops until the student chooses to log out.
+
+    The available options are:
+        1. Change my data - Calls the `change_personal_data` function.
+        2. My groups - Calls the `show_my_groups` function.
+        3. My classes - Calls the `show_my_classes` function.
+        4. Log out - Logs the student out by setting their status to False and exits the menu.
+
+    Returns:
+        None
+    """
     while True:
         text = input("""
         1. Change my data.
@@ -126,4 +176,5 @@ def show_student_menu():
             break
         else:
             print('Invalid option, try again')
+
 
