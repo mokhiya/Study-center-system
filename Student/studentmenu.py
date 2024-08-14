@@ -7,7 +7,7 @@ student_data = student_manager.read_data()
 def check_student(login, password):
     """
     This function checks if a student with the provided login and password exists
-    in the student data. 
+    in the student data.
 
     Args:
         login (str): The login username for the student.
