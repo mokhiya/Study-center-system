@@ -134,7 +134,11 @@ def remove_entity_from_groups(entity_type, entity_name_key, group_key, entity_ma
             group[group_key] = [entity for entity in group[group_key] if entity[entity_name_key] != entity_name]
 
     # Finding the entity in the list
-    selected_entity = next((entity for entity in entity_data if entity[entity_name_key] == entity_name), None)
+    selected_entity = None
+    for entity in entity_data:
+        if entity[entity_name_key] == entity_name:
+            selected_entity = entity
+            break
 
     if selected_entity and 'groups' in selected_entity:
         # Remove the group data from the entity's `groups` list
