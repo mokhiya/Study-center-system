@@ -5,6 +5,16 @@ group_data = group_manager.read_data()
 
 
 def check_teacher(login, password):
+    """
+    This function checks if the provided login and password match any teacher in the teacher data.
+
+    Parameters:
+    - login (str): The teacher's login name.
+    - password (str): The teacher's password.
+
+    Returns:
+    - bool: True if the login is successful, False otherwise.
+    """
     try:
         for teacher in teacher_data:
             if teacher and login == teacher.get('login') and password == teacher.get('password'):
@@ -17,6 +27,13 @@ def check_teacher(login, password):
 
 
 def get_logged_in_teacher():
+    """
+    This function returns the currently logged-in teacher by checking the status of each teacher
+    in the teacher data.
+
+    Returns:
+    - dict: The logged-in teacher's data if found, None otherwise.
+    """
     for teacher in teacher_data:
         if isinstance(teacher, dict) and teacher.get('status'):
             return teacher
@@ -24,7 +41,9 @@ def get_logged_in_teacher():
 
 
 def change_password():
-
+    """
+    This function allows a logged-in teacher to change their password.
+    """
     original_password = input("What password is used in registration? ").strip()
     changed_password = input("What would you like to change the password to? ").strip()
 
@@ -43,6 +62,9 @@ logged_in_teacher = get_logged_in_teacher()
 
 
 def show_groups():
+    """
+    This function displays the groups associated with the logged-in teacher.
+    """
     if not logged_in_teacher:
         print("No teacher is logged in.")
         return
@@ -58,6 +80,9 @@ def show_groups():
 
 
 def show_classes():
+    """
+    This function displays the classes (groups) associated with the logged-in teacher.
+    """
     if logged_in_teacher:
         print(f"\nClasses for {logged_in_teacher['full_name']} teacher:\n")
         if 'groups' in logged_in_teacher and logged_in_teacher['groups']:
@@ -70,16 +95,18 @@ def show_classes():
 
 
 def start_or_end_lesson():
+    """
+    This function allows the logged-in teacher to start or end a lesson (class).
+    """
     show_classes()  # This function should display all available classes/groups
     class_choice = input("\nEnter lesson name: ").title().strip()
     start_end_lesson = input("Would you like to 1. start or 2. end the lesson? ").strip()
 
-    # Find the group that matches the entered class/lesson name
     selected_group = next((group for group in group_data if group['subject'].title() == class_choice), None)
 
     if not selected_group:
         print("No matching lesson found.")
-        return start_or_end_lesson()  # Re-prompt the user
+        return start_or_end_lesson()
 
     if start_end_lesson == "1":
         selected_group['status'] = True
@@ -90,14 +117,17 @@ def start_or_end_lesson():
         print(f"Lesson '{selected_group['subject']}' ended.")
     else:
         print("Invalid choice.")
-        return start_or_end_lesson()  # Re-prompt the user
+        return start_or_end_lesson()
 
-    # Update the group data and return to the teacher menu
-    group_manager.write_data(group_data)  # Save changes to the group data
+    group_manager.write_data(group_data)
     show_teacher_menu()
 
 
 def show_teacher_menu():
+    """
+    This function displays the menu for a logged-in teacher, providing options to change the password,
+    view groups, view classes, start or end a lesson, or log out.
+    """
     while True:
         text = input("""
         1. Change my password.
@@ -118,7 +148,6 @@ def show_teacher_menu():
             start_or_end_lesson()
         elif text == '5':
             print("Logging out.")
-            # Set the teacher's status to False
             for teacher in teacher_data:
                 if teacher.get('status'):
                     teacher['status'] = False
