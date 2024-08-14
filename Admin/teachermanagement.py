@@ -3,6 +3,10 @@ from file_manager import teacher_manager, group_manager, student_manager
 
 
 def create_teacher():
+    """
+    This function creates a new teacher account by prompting for login, password, full name, email, and gender.
+    It then adds the teacher's data to the teacher_manager and returns True to indicate success.
+    """
     teacher_login = input("Create teacher's login: ").strip()
     teacher_password = input("Create teacher's password: ").strip()
     teacher_name = input("Enter teacher's full name: ").title().strip()
@@ -16,6 +20,10 @@ def create_teacher():
 
 
 def show_all_teachers():
+    """
+    This function retrieves and displays all teachers' details from the teacher_manager.
+    If no teachers are found, it prints a message indicating that no teachers are available.
+    """
     teacher_data = teacher_manager.read_data()
 
     if not teacher_data:  # If teacher_data is empty
@@ -34,7 +42,16 @@ def show_all_teachers():
 
 
 def add_entity_to_groups(entity_type):
-    # Determine the correct file managers based on the entity type
+    """
+    This function adds an entity (teacher or student) to a group.
+    It prompts the user to select an entity and a group from the available options.
+    The selected entity is then added to the selected group's list.
+    Updates are saved back to the respective managers.
+
+    Parameters:
+    - entity_type: Type of the entity to be added ('teacher' or 'student').
+    """
+    # Determining the correct file managers based on the entity type
     if entity_type == 'teacher':
         entity_manager = teacher_manager
     elif entity_type == 'student':
@@ -82,11 +99,11 @@ def add_entity_to_groups(entity_type):
         print("No such group found:", group_name)
         return False
 
-    # Add the selected group to the entity's 'groups' list
+    # Adding the selected group to the entity's 'groups' list
     selected_entity.setdefault('groups', []).append(selected_group)
     selected_group.setdefault(f'{entity_type}s', []).append({"full_name": entity_name})
 
-    # Update the data
+    # Updating the data
     entity_manager.write_data(entities)
     group_manager.write_data(groups)
 
@@ -95,6 +112,15 @@ def add_entity_to_groups(entity_type):
 
 
 def remove_entity_from_groups(entity_type, entity_name_key, group_key, entity_manager):
+    """
+    This function removes an entity (teacher or student) from all associated groups.
+
+    Parameters:
+    - entity_type: Type of the entity ('teacher' or 'student').
+    - entity_name_key: Key used to identify the entity's name in data.
+    - group_key: Key used to find the list of entities in each group.
+    - entity_manager: The file manager for the entities.
+        """
     entity_name = input(f"Enter the full name of the {entity_type} to remove from groups: ").title().strip()
     groups = group_manager.read_data()
     entity_data = entity_manager.read_data()
@@ -102,12 +128,12 @@ def remove_entity_from_groups(entity_type, entity_name_key, group_key, entity_ma
     # Flag to check if any removal occurred
     removed = False
 
-    # Remove the entity from the `group_key` list in each group
+    # Removing the entity from the `group_key` list in each group
     for group in groups:
         if group_key in group:
             group[group_key] = [entity for entity in group[group_key] if entity[entity_name_key] != entity_name]
 
-    # Find the entity in the list
+    # Finding the entity in the list
     selected_entity = next((entity for entity in entity_data if entity[entity_name_key] == entity_name), None)
 
     if selected_entity and 'groups' in selected_entity:
@@ -117,7 +143,7 @@ def remove_entity_from_groups(entity_type, entity_name_key, group_key, entity_ma
         removed = True
 
     if removed:
-        # Write updated data back to the files
+        # Writing updated data back to the files
         group_manager.write_data(groups)
         entity_manager.write_data(entity_data)
         print(f"{entity_type.capitalize()} '{entity_name}' has been removed from all associated groups.")
@@ -128,6 +154,13 @@ def remove_entity_from_groups(entity_type, entity_name_key, group_key, entity_ma
 
 
 def delete_teacher():
+    """
+   This function deletes a teacher account based on the provided login.
+   It searches for the teacher in the teacher_manager and deletes the corresponding entry.
+
+   Returns:
+   - True if the teacher was found and deleted, False otherwise.
+   """
     teacher_login = input("Enter teacher's login to delete account: ").strip()
     teacher_data = teacher_manager.read_data()
 
