@@ -1,12 +1,21 @@
+"""
+This module handles the student-related functionalities, including creating new student accounts,
+displaying all students, and deleting student accounts.
+"""
+
 from Student.student import Student
 from file_manager import student_manager, group_manager
 
 
 def create_new_student():
+    """
+    This function creates a new student account with provided details and adds it to the student data file.
+    """
     student_login = input("Create student login: ").strip()
     student_password = input("Create student password: ").strip()
     student_full_name = input("Enter student full name: ").title().strip()
     student_gender = input("Enter student gender: ").title().strip()
+
     while True:  # Validating email format
         student_email = input("Enter student email: ").strip()
         if student_email.endswith('@gmail.com'):
@@ -22,6 +31,9 @@ def create_new_student():
 
 
 def show_all_students():
+    """
+    This function displays all student data in a formatted table.
+    """
     student_data = student_manager.read_data()
 
     if not student_data:  # If student_data is empty
@@ -40,7 +52,9 @@ def show_all_students():
 
 
 def delete_student():
-
+    """
+    This function deletes a student account based on the provided email.
+    """
     student_email = input("Enter teacher's login to delete account: ").strip()
     student_data = student_manager.read_data()
 
