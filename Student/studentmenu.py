@@ -1,8 +1,5 @@
 from file_manager import student_manager
 
-# Loads the student data from the file
-student_data = student_manager.read_data()
-
 
 def check_student(login, password):
     """
@@ -16,6 +13,9 @@ def check_student(login, password):
     Returns:
         bool: True if the student is found and authenticated, False otherwise.
     """
+    # Loads the student data from the file
+    student_data = student_manager.read_data()
+
     try:
         for student in student_data:
             if student and login == student.get('login') and password == student.get('password'):
@@ -33,6 +33,9 @@ def get_logged_in_student():
     Returns:
         dict: The data of the logged-in student, or None if no student is logged in.
     """
+    # Loads the student data from the file
+    student_data = student_manager.read_data()
+
     for student in student_data:
         if student['status']:
             return student
@@ -51,11 +54,12 @@ def change_personal_data():
                           "2. Password.\n"
                           "3. Email.\n"
                           "Enter the number corresponding to your choice: ").strip()
+    # Loads the student data from the file
+    student_data = student_manager.read_data()
 
     if student_input == "1":
         original_name = input("What name is used in registration? ").title().strip()
         changed_name = input("What would you like to change the name to? ").title().strip()
-
         for data in student_data:
             if data['full_name'] == original_name:
                 data['full_name'] = changed_name
@@ -168,6 +172,8 @@ def show_student_menu():
             show_my_classes()
         elif text == '4':
             print("Logging out.")
+            # Loads the student data from the file
+            student_data = student_manager.read_data()
             # Set the student's status to False
             for student in student_data:
                 if student.get('status'):
@@ -176,5 +182,3 @@ def show_student_menu():
             break
         else:
             print('Invalid option, try again')
-
-
