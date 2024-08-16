@@ -79,8 +79,11 @@ def student_management():
     elif text == "5":
         show_all_students()
         return student_management()
-    else:
+    elif text == "6":
         return show_admin_menu()
+    else:
+        print("Invalid option!")
+        return student_management()
 
 
 def group_management():
