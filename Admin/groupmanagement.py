@@ -58,9 +58,6 @@ def create_group():
     group_manager.add_data(group.to_dict())
 
 
-group_data = group_manager.read_data()
-
-
 def show_all_groups():
     groups = group_manager.read_data()  # Fetch the group data from storage
 
@@ -87,6 +84,7 @@ def show_all_groups():
 
 def delete_group():
     group_name = input("Enter a group name: ").title().strip()
+    group_data = group_manager.read_data()
     if group_name not in group_data:
         print("Group not found, try again later")
         return False
