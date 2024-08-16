@@ -55,14 +55,14 @@ def delete_student():
     """
     This function deletes a student account based on the provided email.
     """
-    student_email = input("Enter teacher's login to delete account: ").strip()
+    student_email = input("Enter student's email to delete account: ").strip()
     student_data = student_manager.read_data()
 
     for student in student_data:
         if student['email'] == student_email:
             student_manager.delete_data(student_email, 'email')
-            print(f"Teacher with email '{student_email}' has been deleted.")
+            print(f"Student with email '{student_email}' has been deleted.")
             return True
 
-    print(f"No teacher found with email '{student_email}'.")
+    print(f"No student found with email '{student_email}'.")
     return False
