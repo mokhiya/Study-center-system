@@ -105,8 +105,7 @@ def group_management():
         show_all_groups()
         return group_management()
     elif text == "3":
-        if delete_group():
-            pass
+        delete_group()
         return group_management()
     else:
         return show_admin_menu()
@@ -137,6 +136,5 @@ def show_admin_menu():
         elif text == '4':
             print("Quitting..."
                   "Start the program again to log in")
-            return
         else:
             print("Invalid input, try again")
